@@ -7,6 +7,7 @@ const rfMuiTheme = createTheme(
   {
     typography: {
       fontFamily: 'Prata, sans-serif',
+      color: 'white',
     },
     palette: {
       type: 'dark',
@@ -14,7 +15,7 @@ const rfMuiTheme = createTheme(
         lightest: '#f1f3fb',
         lighter: '#c1cdf0',
         light: '#778edc',
-        main: '#315bcd',
+        main: 'rgba(255,255,255, 0)',
         dark: '#1e48b6',
         darker: '#0f245b',
         analogous: '#31a9cd',
