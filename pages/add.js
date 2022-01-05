@@ -72,6 +72,7 @@ export default function AddPage() {
               label="Promesse"
               variant="filled"
               color="neutral"
+              multiline
               rows={2}
               value={values.promise}
               onChange={(event) => {
@@ -148,11 +149,6 @@ export default function AddPage() {
               size="large"
               type="submit"
               onClick={handleSubmit}
-              InputProps={{
-                style: {
-                  color: '#fff',
-                }
-              }}
             >
               Ajouter une promesse
             </LoadingButton>

@@ -49,7 +49,7 @@ export default function ListPage({ fallback }) {
           <Button
             onClick={() => { handleFilter('pending') }}
             color={selectedFilter === 'pending' ? 'primary' : 'inherit'}
-          >Pending</Button>
+          >En cours</Button>
           <Button
             onClick={() => { handleFilter('resolved') }}
             color={selectedFilter === 'resolved' ? 'primary' : 'inherit'}
