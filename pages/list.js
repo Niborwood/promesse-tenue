@@ -1,4 +1,4 @@
-import { Box, ButtonGroup, Button, Typography } from '@mui/material';
+import { Box, ButtonGroup, Button, Typography, TextField, Divider } from '@mui/material';
 import PageTitle from '../components/ui/page-title';
 import Promises from '../components/ui/promises';
 
@@ -24,11 +24,23 @@ export default function ListPage({ fallback }) {
     setPromises(filteredPromises);
   }
 
+  // Handle search
+  const [search, setSearch] = useState('');
+  function handleSearch(value) {
+    setSearch(value);
+    const filteredPromises = allPromises.filter(promise => promise.person.toLowerCase().includes(value.toLowerCase()));
+    setPromises(filteredPromises);
+  }
+
   return (
     <Box py={4}>
 
       <PageTitle title="Promesses" />
 
+      <Divider sx={{ my: 2 }} />
+
+
+      {/* Filter */}
       <Box my={2}>
         <Typography variant="h6" color="white" sx={{ mb: 0 }}>
           Filtrer
@@ -48,6 +60,37 @@ export default function ListPage({ fallback }) {
           >Rompues</Button>
         </ButtonGroup>
       </Box>
+
+      {/* Search */}
+      <Box>
+        <Typography variant="h6" color="white" sx={{ mb: 0 }}>
+          Rechercher par concerné.e
+        </Typography>
+        <TextField
+          id="search"
+          variant="standard"
+          color="neutral"
+          size="small"
+          value={search}
+          InputProps={{
+            style: {
+              color: '#fff'
+            }
+          }}
+          InputLabelProps={{
+            style: {
+              color: '#fff'
+            }
+          }}
+          onChange={
+            (event) => { handleSearch(event.target.value) }
+
+          }
+
+        />
+      </Box>
+
+      <Divider sx={{ my: 4 }} />
 
       <SWRConfig value={{ fallback }}>
         <Promises
