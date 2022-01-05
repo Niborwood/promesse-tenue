@@ -5,7 +5,7 @@ import PromiseDialog from './promise-dialog';
 
 import { useState } from 'react';
 
-export default function PromiseCard({ promise, promises }) {
+export default function PromiseCard({ promise, promises, setPromises }) {
   // Handle dialog state & open handler
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => {

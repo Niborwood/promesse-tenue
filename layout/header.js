@@ -10,6 +10,11 @@ export default function Header() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
+
+          <Typography align="left" variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            <Link href="/" color="neutral.main"><strong>promesse.tenue</strong></Link>
+          </Typography>
+
           <Link href="/add" color="white">
             <IconButton
               size="large"
@@ -31,11 +36,6 @@ export default function Header() {
               <FactCheckIcon fontSize="inherit" />
             </IconButton>
           </Link>
-
-          <Typography align="right" variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            <Link href="/" color="neutral.main"><strong>promesse.tenue</strong></Link>
-          </Typography>
-
 
         </Toolbar>
       </AppBar>
