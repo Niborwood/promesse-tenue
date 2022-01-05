@@ -1,11 +1,11 @@
 import { Typography, Paper, Collapse, Divider } from '@mui/material';
-import PromiseMain from '../components/promise-card/promise-main';
-import PromiseFooter from '../components/promise-card/promise-footer';
-import PromiseDialog from '../components/promise-card/promise-dialog';
+import PromiseMain from './promise-main';
+import PromiseFooter from './promise-footer';
+import PromiseDialog from './promise-dialog';
 
 import { useState } from 'react';
 
-export default function PromiseCard({ promise }) {
+export default function PromiseCard({ promise, promises }) {
   // Handle dialog state & open handler
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => {
@@ -47,8 +47,10 @@ export default function PromiseCard({ promise }) {
 
       {/* Dialog */}
       <PromiseDialog
+        _id={promise._id}
         open={open}
         setOpen={setOpen}
+        promises={promises}
       />
 
     </Collapse >

@@ -1,38 +1,51 @@
-import { Box, Slide, TextField, Typography, Stack, Tooltip, IconButton, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@mui/material';
+import { Box, Slide, TextField, Typography, Stack, Tooltip, IconButton, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Divider } from '@mui/material';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import { useState } from 'react';
 
-export default function PromiseDialog({ open, setOpen }) {
+import { useState } from 'react';
+import { useSWRConfig } from 'swr';
+import patchPromise from '../../helpers/mutaters/patch-promise';
+
+export default function PromiseDialog({ _id, open, setOpen, promises }) {
+  const { mutate } = useSWRConfig();
 
   // Handle promise actions
-  const [promiseAction, setPromiseAction] = useState(false);
+  const initialPromiseActionState = { _id, details: '' };
+  const [promiseAction, setPromiseAction] = useState(initialPromiseActionState);
   function handlePromiseAction(promise) {
-    setPromiseAction({
-      step: 'details',
-      promise,
-    });
-  };
-
-  // Handle API call
-  function handleSubmit(event) {
-    event.preventDefault();
     setPromiseAction(prev => ({
       ...prev,
-      step: 'sent',
+      step: 'details',
+      promise,
     })
     );
-    console.log('submit');
-  }
+  };
 
   // Handle dialog close
   const handleClose = () => {
     setOpen(false);
     // Set false after 200ms to avoi flashing content
     setTimeout(() => {
-      setPromiseAction(false);
+      setPromiseAction(initialPromiseActionState);
     }, 150);
   };
+
+  // Handle API call
+  async function handleSubmit(event) {
+    event.preventDefault();
+
+    // Patch data on API and mutate
+    await mutate('/api/promises', patchProise({
+      status: promiseAction.promise,
+      details: promiseAction.details,
+    }, _id, promises));
+
+    setPromiseAction(prev => ({
+      ...prev,
+      step: 'sent',
+    })
+    );
+  }
 
   // Display dialog content
   let dialogContent;
@@ -53,6 +66,11 @@ export default function PromiseDialog({ open, setOpen }) {
               fullWidth
               multiline
               rows={3}
+              value={promiseAction.details}
+              onChange={event => setPromiseAction(prev => ({
+                ...prev,
+                details: event.target.value,
+              }))}
             />
           </Box>
         </Slide>
@@ -62,7 +80,8 @@ export default function PromiseDialog({ open, setOpen }) {
     case 'sent':
       dialogContent = (
         <Slide in appear direction="right">
-          <Typography variant="h6" color={promiseAction.promise === 'resolved' ? 'primary' : 'error'} sx={{ my: 4 }}>
+
+          <Typography variant="h6" color={promiseAction.promise === 'resolved' ? 'primary' : 'error'} sx={{ my: 1 }}>
             Promesse {promiseAction.promise === 'resolved' ? 'tenue' : 'rompue'}.
           </Typography>
         </Slide>
@@ -73,12 +92,16 @@ export default function PromiseDialog({ open, setOpen }) {
       dialogContent = (
         <Stack direction="row" justifyContent="center" mt={4} spacing={8}>
           <Tooltip title="Rejeter la promesse">
-            <IconButton aria-label="validate" color="error" sx={{ fontSize: '60px' }} onClick={handlePromiseAction}>
+            <IconButton aria-label="validate" color="error" sx={{ fontSize: '60px' }} onClick={
+              () => { handlePromiseAction('rejected') }
+            }>
               <HighlightOffIcon fontSize="inherit" />
             </IconButton>
           </Tooltip>
           <Tooltip title="Valider la promesse">
-            <IconButton color="primary" aria-label="reject" sx={{ fontSize: '60px' }} onClick={handlePromiseAction}>
+            <IconButton color="primary" aria-label="reject" sx={{ fontSize: '60px' }} onClick={
+              () => { handlePromiseAction('resolved') }
+            }>
               <TaskAltIcon fontSize="inherit" />
             </IconButton>
           </Tooltip>
@@ -97,6 +120,9 @@ export default function PromiseDialog({ open, setOpen }) {
       <DialogTitle id="alert-dialog-title">
         Résoudre la promesse
       </DialogTitle>
+
+      <Divider />
+
       <DialogContent>
 
         <DialogContentText id="alert-dialog-description" variant="body2">
