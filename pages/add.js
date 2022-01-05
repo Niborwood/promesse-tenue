@@ -1,7 +1,8 @@
-import { Box, TextField, Stack, Snackbar, Alert, Fade } from '@mui/material';
+import { Box, TextField, Stack, Snackbar, Alert, Fade, Typography } from '@mui/material';
 import { useState } from 'react';
 import PageTitle from '../components/ui/page-title';
 import LoadingButton from '@mui/lab/LoadingButton';
+import Link from '../components/ui/link';
 
 
 export default function AddPage() {
@@ -159,7 +160,11 @@ export default function AddPage() {
 
       <Snackbar open={successMessage || errorMessage} autoHideDuration={2000} onClose={handleClose}>
         <Alert onClose={handleClose} severity={errorMessage ? 'error' : 'success'} sx={{ width: '100%' }}>
-          {errorMessage ? 'Certains champs sont invalides.' : 'Promesse ajoutée.'}
+          {errorMessage ? 'Certains champs sont invalides ou un problème serveur est survenue.' : (
+            <Typography variant="body2">
+              Promesse ajoutée avec succès ! <br /> <Link color="secondary" href="/list">Voir les promesses</Link>
+            </Typography>
+          )}
         </Alert>
       </Snackbar>
 
