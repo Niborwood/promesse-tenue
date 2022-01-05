@@ -5,32 +5,50 @@ import { createTheme } from '@mui/material/styles';
 // Create a theme instance. Affet colors, typography, and localization (frFR, imported from @mui/material/locale)
 const rfMuiTheme = createTheme(
   {
+    shape: {
+      borderRadius: 8,
+    },
+
     typography: {
       fontFamily: 'Prata, sans-serif',
-      color: 'white',
+      button: {
+        fontWeight: 'bold',
+        textTransform: 'none',
+      },
+      subtitle1: {
+        fontSize: 12,
+      }
     },
+
     palette: {
-      type: 'dark',
       primary: {
-        lightest: '#f1f3fb',
-        lighter: '#c1cdf0',
-        light: '#778edc',
-        main: 'rgba(255,255,255, 0)',
-        dark: '#1e48b6',
-        darker: '#0f245b',
-        analogous: '#31a9cd',
+        main: '#14b8a6',
+        contrastText: '#fff',
       },
       secondary: {
-        lightest: '#feeef3',
-        light: '#fb5d89',
-        main: '#f50057',
-        dark: '#ab003c',
+        main: '#06b6d4',
       },
       neutral: {
         main: '#fff',
-        lightGrey: '#f1f1f1',
-      }
+        light: '#f1f1f1',
+      },
+      contrastThreshold: 3,
+      tonalOffset: 0.2,
     },
+
+    components: {
+      // Name of the component
+      MuiTextField: {
+        styleOverrides: {
+          // Name of the slot
+          root: {
+            // Some CSS
+            color: 'white',
+          },
+        },
+      },
+    },
+
   },
   frFR,
 );

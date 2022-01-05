@@ -1,19 +1,27 @@
-import { Box, Typography, Slide, Stack } from '@mui/material';
+import { Box, Stack } from '@mui/material';
+import PageTitle from '../components/ui/page-title';
 import PromiseCard from '../components/promise-card';
 
-export default function ListPage() {
+import { getDocuments } from '../helpers/db';
+
+export default function ListPage({ promises }) {
   return (
     <Box py={4}>
-      <Slide in direction='right'>
-        <Typography variant="h3" color="white">
-          Consulter les promesses
-        </Typography>
-      </Slide>
-      <Stack spacing={2} sx={{ my: 4 }}>
-        <PromiseCard />
-        <PromiseCard />
-        <PromiseCard />
+      <PageTitle title="Promesses" />
+      <Stack spacing={2} sx={{ mt: 4 }}>
+        {promises.map(promise => (
+          <PromiseCard promise={promise} key={promise._id} />
+        ))}
       </Stack>
     </Box>
   )
+}
+
+export async function getStaticProps() {
+  const promises = await getDocuments('promises');
+  return {
+    props: {
+      promises
+    },
+  }
 }

@@ -1,24 +1,34 @@
-import { Box, AppBar, Toolbar, IconButton, Typography, Button } from '@mui/material'; 
-import MenuIcon from '@mui/icons-material/Menu';
+import { Box, AppBar, Toolbar, IconButton, Typography } from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+
+import { useRouter } from 'next/router';
+import Link from '../components/ui/link';
 
 export default function Header() {
+  const router = useRouter();
+  function handleBack() {
+    router.back();
+  }
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-          
-          <Typography align="center" variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            <strong>promesse.tenue</strong>
-          </Typography>
-
           <IconButton
             size="small"
             edge="start"
             color="inherit"
             aria-label="menu"
+            onClick={handleBack}
           >
-            <MenuIcon />
+            <ArrowBackIcon />
           </IconButton>
+
+          <Typography align="right" variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            <Link href="/" color="neutral.main"><strong>promesse.tenue</strong></Link>
+          </Typography>
+
+
         </Toolbar>
       </AppBar>
     </Box>
