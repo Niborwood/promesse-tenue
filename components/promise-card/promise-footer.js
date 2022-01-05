@@ -1,4 +1,4 @@
-import { Stack, Button, Typography, Box } from '@mui/material';
+import { Button, Typography, Box } from '@mui/material';
 
 export default function PromiseFooter({ status, details, closedDate, onClick }) {
   const humanReadableDate = new Date(closedDate).toLocaleDateString('fr-FR', {
