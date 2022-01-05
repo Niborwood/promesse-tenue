@@ -35,7 +35,7 @@ export default function PromiseDialog({ _id, open, setOpen, promises }) {
     event.preventDefault();
 
     // Patch data on API and mutate
-    await mutate('/api/promises', patchProise({
+    await mutate('/api/promises', patchPromise({
       status: promiseAction.promise,
       details: promiseAction.details,
     }, _id, promises));
