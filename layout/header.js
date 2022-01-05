@@ -36,7 +36,6 @@ export default function Header() {
               <FactCheckIcon fontSize="inherit" />
             </IconButton>
           </Link>
-
         </Toolbar>
       </AppBar>
     </Box>

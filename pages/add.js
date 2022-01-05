@@ -1,21 +1,30 @@
-import { Box, TextField, Stack, Button, Fade } from '@mui/material';
+import { Box, TextField, Stack, Snackbar, Alert, Fade } from '@mui/material';
 import { useState } from 'react';
 import PageTitle from '../components/ui/page-title';
 import LoadingButton from '@mui/lab/LoadingButton';
 
 
 export default function AddPage() {
-  // Prepare data for mutation
-
   // State for values form
   const [values, setValues] = useState({
     promise: '',
     context: '',
     person: '',
   });
+  const [successMessage, setSuccessMessage] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(false);
 
   // State for loading state
   const [loading, setLoading] = useState(false);
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setErrorMessage(false);
+    setSuccessMessage(false);
+  };
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -23,7 +32,7 @@ export default function AddPage() {
 
     // Send the data through the API
     try {
-      await fetch('/api/promises', {
+      const response = await fetch('/api/promises', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -31,12 +40,24 @@ export default function AddPage() {
         body: JSON.stringify(values),
       });
 
+      if (!response.ok) {
+        throw new Error;
+      }
+
+      // Reset form
+      setValues({
+        promise: '',
+        context: '',
+        person: '',
+      });
+      setSuccessMessage(true);
+
     } catch (err) {
       console.log(err);
+      setErrorMessage(true);
+    } finally {
+      setLoading(false);
     }
-
-    // Re-init and success message
-    setLoading(false);
   }
 
   return (
@@ -49,9 +70,8 @@ export default function AddPage() {
 
             <TextField
               label="Promesse"
-              variant="standard"
+              variant="filled"
               color="neutral"
-              multiline
               rows={2}
               value={values.promise}
               onChange={(event) => {
@@ -59,12 +79,23 @@ export default function AddPage() {
                   return { ...prev, promise: event.target.value };
                 });
               }}
+              InputProps={{
+                style: {
+                  color: '#fff',
+                  borderColor: '#fff',
+                }
+              }}
+              InputLabelProps={{
+                style: {
+                  color: '#fff'
+                }
+              }}
               required
             />
 
             <TextField
               label="Contexte"
-              variant="standard"
+              variant="filled"
               color="neutral"
               multiline
               rows={4}
@@ -74,18 +105,38 @@ export default function AddPage() {
                   return { ...prev, context: event.target.value };
                 });
               }}
+              InputProps={{
+                style: {
+                  color: '#fff'
+                }
+              }}
+              InputLabelProps={{
+                style: {
+                  color: '#fff'
+                }
+              }}
               required
             />
 
             <TextField
               label="Personne"
-              variant="standard"
+              variant="filled"
               color="neutral"
               value={values.person}
               onChange={(event) => {
                 setValues(prev => {
                   return { ...prev, person: event.target.value };
                 });
+              }}
+              InputProps={{
+                style: {
+                  color: '#fff'
+                }
+              }}
+              InputLabelProps={{
+                style: {
+                  color: '#fff'
+                }
               }}
               required
             />
@@ -97,6 +148,11 @@ export default function AddPage() {
               size="large"
               type="submit"
               onClick={handleSubmit}
+              InputProps={{
+                style: {
+                  color: '#fff',
+                }
+              }}
             >
               Ajouter une promesse
             </LoadingButton>
@@ -105,6 +161,12 @@ export default function AddPage() {
         </Box>
       </Fade>
 
-    </Box>
+      <Snackbar open={successMessage || errorMessage} autoHideDuration={2000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity={errorMessage ? 'error' : 'success'} sx={{ width: '100%' }}>
+          {errorMessage ? 'Certains champs sont invalides.' : 'Promesse ajoutée.'}
+        </Alert>
+      </Snackbar>
+
+    </Box >
   )
 }
