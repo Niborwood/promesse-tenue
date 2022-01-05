@@ -45,7 +45,10 @@ export default function PromiseMain({ status, promise, date }) {
   }
 
   return (
-    <Stack direction="row" spacing={2} sx={{ mb: 4 }}>
+    <Stack direction="row" spacing={2} sx={{
+      mb: 4, background: 'url(quote.png) no-repeat top right',
+      backgroundSize: 'contain'
+    }}>
       <Box>
         {icon}
       </Box>
