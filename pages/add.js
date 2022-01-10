@@ -1,4 +1,8 @@
-import { Box, TextField, Stack, Snackbar, Alert, Fade, Typography } from '@mui/material';
+import { Box, TextField, Stack, Snackbar, Alert, Fade, Typography, Switch, FormGroup, FormControlLabel, Grow } from '@mui/material';
+import DateAdapter from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import DatePicker from '@mui/lab/DatePicker';
+
 import { useState } from 'react';
 import PageTitle from '../components/ui/page-title';
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -11,7 +15,9 @@ export default function AddPage() {
     promise: '',
     context: '',
     person: '',
+    date: new Date(),
   });
+  const [dateOpen, setDateOpen] = useState(false);
   const [successMessage, setSuccessMessage] = useState(false);
   const [errorMessage, setErrorMessage] = useState(false);
 
@@ -69,6 +75,7 @@ export default function AddPage() {
         <Box component="form" my={4} onSubmit={handleSubmit}>
           <Stack direction="column" spacing={4}>
 
+            {/* Promesse */}
             <TextField
               label="Promesse"
               variant="filled"
@@ -95,6 +102,7 @@ export default function AddPage() {
               required
             />
 
+            {/* Contexte */}
             <TextField
               label="Contexte"
               variant="filled"
@@ -120,6 +128,7 @@ export default function AddPage() {
               required
             />
 
+            {/* Personne */}
             <TextField
               label="Personne"
               variant="filled"
@@ -143,6 +152,46 @@ export default function AddPage() {
               required
             />
 
+            {/* Antidate */}
+            <FormGroup>
+              <FormControlLabel
+                sx={{ color: "neutral.main" }}
+                control={
+                  <Switch
+                    color="neutral"
+                    checked={dateOpen}
+                    onChange={() => setDateOpen(!dateOpen)}
+                  />
+                }
+                label="Antidater" />
+            </FormGroup>
+            {dateOpen && (
+              <LocalizationProvider dateAdapter={DateAdapter}>
+                <DatePicker
+                  disableFuture
+                  label="Date"
+                  openTo="year"
+                  views={['year', 'month', 'day']}
+                  value={values.date}
+                  onChange={(newValue) => {
+                    setValues(prev => {
+                      return { ...prev, date: newValue };
+                    });
+                  }}
+                  renderInput={(params) => <TextField
+                    variant="filled" {...params}
+                    color="neutral"
+                    InputLabelProps={{
+                      style: {
+                        color: '#fff'
+                      }
+                    }}
+                  />}
+                />
+              </LocalizationProvider>
+            )}
+
+            {/* Loading Button */}
             <LoadingButton
               loading={loading}
               variant="contained"

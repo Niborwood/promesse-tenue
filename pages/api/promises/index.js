@@ -14,6 +14,7 @@ export default async function handler(req, res) {
       promise: Joi.string().trim().required(),
       context: Joi.string().trim().required(),
       person: Joi.string().trim().required(),
+      date: Joi.date(),
     });
     const { error } = schema.validate(req.body);
     if (error) {
@@ -23,7 +24,6 @@ export default async function handler(req, res) {
     // Construct the data
     const data = {
       ...req.body,
-      date: new Date(),
       status: 'pending',
     }
 
