@@ -2,6 +2,7 @@ import { Box, TextField, Stack, Snackbar, Alert, Fade, Typography, Switch, FormG
 import DateAdapter from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
+import frLocale from 'date-fns/locale/fr';
 
 import { useState } from 'react';
 import PageTitle from '../components/ui/page-title';
@@ -166,7 +167,7 @@ export default function AddPage() {
                 label="Antidater" />
             </FormGroup>
             {dateOpen && (
-              <LocalizationProvider dateAdapter={DateAdapter}>
+              <LocalizationProvider dateAdapter={DateAdapter} locale={frLocale}>
                 <DatePicker
                   disableFuture
                   label="Date"
@@ -181,9 +182,17 @@ export default function AddPage() {
                   renderInput={(params) => <TextField
                     variant="filled" {...params}
                     color="neutral"
+                    // InputProps={{
+                    //   style: {
+                    //     color: '#fff'
+                    //   },
+                    //   svg: {
+                    //     color: '#fff'
+                    //   }
+                    // }}
                     InputLabelProps={{
                       style: {
-                        color: '#fff'
+                        color: '#fff',
                       }
                     }}
                   />}
